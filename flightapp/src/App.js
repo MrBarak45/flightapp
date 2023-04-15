@@ -1,14 +1,13 @@
-import './App.css';
+// App.js
+import React from 'react';
 import {SearchForm} from "./components/SearchForm";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-const theme = createTheme();
 function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <SearchForm/>
-    </ThemeProvider>
-  );
+    return (
+        <div>
+            <SearchForm />
+        </div>
+    );
 }
 
 export default App;
