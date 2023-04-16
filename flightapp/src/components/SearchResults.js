@@ -7,13 +7,10 @@ export const SearchResults = ({searchResults, passengerCount}) => {
     const [page, setPage] = useState(1);
     const [resultsPerPage, setResultsPerPage] = useState(10);
 
-
-
     return (
         <div>
             {
                 searchResults.length > 0 ?
-
                     <div>
                         <List>
                             {searchResults
@@ -32,11 +29,8 @@ export const SearchResults = ({searchResults, passengerCount}) => {
                     :
 
                     <div>
-                        <span> Aucun resultat trouve ! </span>
+                        <span>Aucun résultat trouvé.</span>
                     </div>
-
-
-
             }
         </div>
     );

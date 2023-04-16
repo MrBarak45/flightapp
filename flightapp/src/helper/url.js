@@ -1,7 +1,7 @@
 const dockerUrl = 'http://localhost:80';
 const devUrl = 'https://localhost:44316';
 
-const usedUrl = devUrl;
+const usedUrl = dockerUrl;
 
 export const buildGetFlightsUrl = (departureCity, arrivalCity, departureDate, returnDate, passengerCount) => {
     const queryParams = new URLSearchParams({

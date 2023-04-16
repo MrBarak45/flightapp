@@ -33,6 +33,7 @@ export const SearchForm = () => {
             setSearchResults(results);
             setSearchResultVisibility(true);
         } catch (error) {
+            //snack bar with error later
             console.error(error);
         }
     };
