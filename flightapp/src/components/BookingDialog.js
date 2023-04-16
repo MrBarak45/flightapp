@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    TextField,
-    Button,
-} from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button} from "@mui/material";
 import {validateEmail, validatePhoneNumber} from "../helper/validators";
 import {buildPostBookingUrl} from "../helper/url";
 
-const BookingDialog = ({ flight, open, handleClose, handleSnackbarOpen, passengerCount }) => {
+const BookingDialog = ({ flight, open, handleClose, handleSuccessSnackbarOpen, handleErrorSnackbarOpen, passengerCount }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState(false);
@@ -18,11 +11,11 @@ const BookingDialog = ({ flight, open, handleClose, handleSnackbarOpen, passenge
     const [phoneError, setPhoneError] = useState(false);
 
     const handleBooking = async () => {
-
         const isEmailValid = validateEmail(email);
         const isPhoneValid = validatePhoneNumber(phoneNumber);
         setEmailError(!isEmailValid);
         setPhoneError(!isPhoneValid);
+
 
         if (isEmailValid && isPhoneValid) {
             try {
@@ -34,8 +27,8 @@ const BookingDialog = ({ flight, open, handleClose, handleSnackbarOpen, passenge
                     passengerEmail: email,
                     passengerPhone: phoneNumber,
                 };
-                console.log("booking data")
-                console.log(bookingData)
+                // console.log("booking data")
+                // console.log(bookingData)
 
                 const response = await fetch(bookingUrl, {
                     method: "POST",
@@ -50,14 +43,21 @@ const BookingDialog = ({ flight, open, handleClose, handleSnackbarOpen, passenge
                 }
 
                 const result = await response.json();
+
+                // console.log("result")
+                // console.log(result)
+                if(result){
+                    handleClose();
+                    handleSuccessSnackbarOpen();
+                } else {
+                    handleClose();
+                    handleErrorSnackbarOpen();
+                }
                 // console.log("Booking created successfully:", result);
                 // console.log(selectedFlight)
             } catch (error) {
                 console.error("Error creating booking:", error);
             }
-
-            handleClose();
-            handleSnackbarOpen();
 
             setName('');
             setEmail('');

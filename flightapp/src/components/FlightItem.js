@@ -1,20 +1,14 @@
 import React, { useState } from "react";
-import {
-    ListItem,
-    ListItemAvatar,
-    Avatar,
-    ListItemText,
-    ListItemSecondaryAction,
-    Typography,
-    Box, Button,
-} from "@mui/material";
+import { ListItem, ListItemAvatar, Avatar, ListItemText, ListItemSecondaryAction, Typography, Box, Button,} from "@mui/material";
 import FlightIcon from "@mui/icons-material/Flight";
 import BookingDialog from "./BookingDialog";
-import SuccessSnackbar from "./SuccessSnackbar";
+import SuccessSnackbar from "./SnackBars/SuccessSnackbar";
+import ErrorSnackbar from "./SnackBars/ErrorSnackbar";
 
-export const FlightItem = ({flight}, passengerCount) => {
+export const FlightItem = ({flight, passengerCount}) => {
     const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+    const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
 
     const handleBookingDialogOpen = () => {
         setBookingDialogOpen(true);
@@ -28,7 +22,14 @@ export const FlightItem = ({flight}, passengerCount) => {
         if (reason === "clickaway") {
             return;
         }
-        setSnackbarOpen(false);
+        setSuccessSnackbarOpen(false);
+    };
+
+    const handleErrorSnackbarClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setErrorSnackbarOpen(false);
     };
 
     return (
@@ -49,6 +50,7 @@ export const FlightItem = ({flight}, passengerCount) => {
                         <FlightIcon />
                     </Avatar>
                 </ListItemAvatar>
+
                 <ListItemText
                     primary={
                         <Typography variant="subtitle1">
@@ -66,6 +68,7 @@ export const FlightItem = ({flight}, passengerCount) => {
                         </Box>
                     }
                 />
+
                 <ListItemSecondaryAction>
                     <Typography variant="h6" color="primary">
                         {flight.price}€
@@ -81,14 +84,20 @@ export const FlightItem = ({flight}, passengerCount) => {
                         flight={flight}
                         open={bookingDialogOpen}
                         handleClose={handleBookingDialogClose}
-                        handleSnackbarOpen={() => setSnackbarOpen(true)}
+                        handleSuccessSnackbarOpen={() => setSuccessSnackbarOpen(true)}
+                        handleErrorSnackbarOpen={() => setErrorSnackbarOpen(true)}
                         passengerCount={passengerCount}
                     />
                 </ListItemSecondaryAction>
             </ListItem>
+
             <SuccessSnackbar
-                open={snackbarOpen}
+                open={successSnackbarOpen}
                 handleClose={handleSnackbarClose}
+            />
+            <ErrorSnackbar
+                open={errorSnackbarOpen}
+                handleClose={handleErrorSnackbarClose}
             />
         </div>
     );

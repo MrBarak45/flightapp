@@ -3,19 +3,7 @@ import { TextField, Button, MenuItem, Paper } from '@mui/material';
 import {buildGetFlightsUrl} from "../helper/url";
 import componentStyles from "./styles";
 import {SearchResults} from "./SearchResults";
-
-const cities = [
-    { value: 'ORY', label: 'Paris, France' },
-    { value: 'FEZ', label: 'Fes, Maroc' },
-    { value: 'LEJ', label: 'Leipzig, Allemagne' },
-];
-
-const passengers = [
-    { value: 1, label: '1' },
-    { value: 2, label: '2' },
-    { value: 3, label: '3' },
-    { value: 4, label: '4' },
-];
+import {passengers, cities} from "../helper/constants";
 
 export const SearchForm = () => {
     const [departureCity, setDepartureCity] = useState('');
@@ -24,6 +12,8 @@ export const SearchForm = () => {
     const [returnDate, setReturnDate] = useState('');
     const [passengerCount, setPassengerCount] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+
+    const [searchResultVisibility, setSearchResultVisibility] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -39,26 +29,30 @@ export const SearchForm = () => {
             });
 
             const results = await response.json();
+
             setSearchResults(results);
+            setSearchResultVisibility(true);
         } catch (error) {
             console.error(error);
         }
     };
+
+    const classes = componentStyles();
 
     const year = new Date().getFullYear();
     const minDate = new Date(year, 3, 14).toISOString().split('T')[0];
     const maxDate = new Date(year, 3, 18).toISOString().split('T')[0];
 
     return (
-        <div sx={componentStyles.container}>
-            <Paper sx={componentStyles.formPaper}>
-                <form sx={componentStyles.form} onSubmit={handleSubmit}>
+        <div className={classes.container}>
+            <Paper className={classes.formPaper}>
+                <form className={classes.form} onSubmit={handleSubmit}>
                     <TextField
                         select
                         label="Ville de départ"
                         value={departureCity}
                         onChange={(event) => setDepartureCity(event.target.value)}
-                        sx={componentStyles.formElement}
+                        className={classes.formElement}
                     >
                         {cities.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -67,7 +61,7 @@ export const SearchForm = () => {
                         ))}
                     </TextField>
                     <TextField
-                        sx={componentStyles.formElement}
+                        className={classes.formElement}
                         select
                         label="Ville d'arrivée"
                         value={arrivalCity}
@@ -80,7 +74,7 @@ export const SearchForm = () => {
                         ))}
                     </TextField>
                     <TextField
-                        sx={componentStyles.formElement}
+                        className={classes.formElement}
                         label="Date de départ"
                         type="date"
                         InputLabelProps={{
@@ -91,7 +85,7 @@ export const SearchForm = () => {
                         onChange={(event) => setDepartureDate(event.target.value)}
                     />
                     <TextField
-                        sx={componentStyles.formElement}
+                        className={classes.formElement}
                         label="Date de retour"
                         type="date"
                         InputLabelProps={{
@@ -102,7 +96,7 @@ export const SearchForm = () => {
                         onChange={(event) => setReturnDate(event.target.value)}
                     />
                     <TextField
-                        sx={componentStyles.formElement}
+                        className={classes.formElement}
                         select
                         label="Nombre de passagers"
                         value={passengerCount}
@@ -114,13 +108,18 @@ export const SearchForm = () => {
                             </MenuItem>
                         ))}
                     </TextField>
-                    <Button type="submit" variant="contained" color="primary" sx={componentStyles.formElement} disabled={!departureCity || !arrivalCity || !departureDate || !returnDate || !passengerCount}>
-                        Rechercher
+                    <Button type="submit" variant="contained" color="primary" className={classes.formElement}
+                            disabled={!departureCity || !arrivalCity || !departureDate || !returnDate || !passengerCount}>
+                        <strong>Rechercher</strong>
                     </Button>
                 </form>
             </Paper>
 
-            <SearchResults searchResults={searchResults}></SearchResults>
+            {
+                searchResultVisibility &&
+                    <SearchResults searchResults={searchResults} passengerCount={passengerCount}></SearchResults>
+            }
+
         </div>
     );
 };

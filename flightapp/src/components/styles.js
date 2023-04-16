@@ -1,7 +1,9 @@
 import { createTheme } from "@mui/material/styles";
+import {makeStyles} from "@mui/styles";
 
-const theme = createTheme({})
-export const componentStyles = {
+const theme = createTheme({});
+
+const componentStyles = makeStyles(() => ({
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -28,6 +30,7 @@ export const componentStyles = {
         margin: theme.spacing(1),
         width: '150px'
     },
-};
-
+}));
 export default componentStyles;
+
+
