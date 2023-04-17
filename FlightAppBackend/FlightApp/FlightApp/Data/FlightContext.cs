@@ -16,7 +16,7 @@ namespace FlightApp.Data
             var startDate = new DateTime(2023, 4, 13);
             var endDate = new DateTime(2023, 4, 18);
             
-            var flights = FlightGenerator.GenerateRandomFlights(5, airportCodeNames, startDate, endDate);
+            var flights = FlightGenerator.GenerateRandomFlights(5000, airportCodeNames, startDate, endDate);
 
             modelBuilder.Entity<Flight>().HasData(flights);
         }
