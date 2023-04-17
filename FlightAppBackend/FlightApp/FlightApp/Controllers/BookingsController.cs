@@ -12,7 +12,6 @@ namespace FlightApp.Controllers
     public class BookingsController
     {
         private readonly FlightContext _context;
-        //private readonly ILogger<WeatherForecastController> _logger;
 
         public BookingsController(FlightContext context)
         {
