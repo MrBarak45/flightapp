@@ -95,14 +95,12 @@ namespace FlightApp.Test
         [Test]
         public void FilterFlights_Should_ReturnFlights_SortedByPrice()
         {
-            // Act
+            // Arrange, Act
             var filteredFlights = _flightsService.FilterFlights(null, null, null, null, 0).ToList();
 
             //Assert
             for (var i = 1; i < filteredFlights.Count; i++)
-            {
-                Assert.LessOrEqual(filteredFlights[i - 1].Price, filteredFlights[i].Price);
-            }
+                Assert.LessOrEqual(filteredFlights[i-1].Price, filteredFlights[i].Price);
         }
 
         private void GenerateFlightsOnDatabase()

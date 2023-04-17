@@ -1,0 +1,12 @@
+[
+  [
+    { "Type": "Adult" },
+    { "Type": "Adult" },
+    { "Type": "Child" },
+    { "Type": "Child" }
+  ],
+  [
+    { "Type": "Adult" },
+    { "Type": "Adult" }
+  ]
+]

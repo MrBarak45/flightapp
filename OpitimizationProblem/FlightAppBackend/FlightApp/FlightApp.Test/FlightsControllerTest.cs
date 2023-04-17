@@ -52,25 +52,26 @@ namespace FlightApp.Test
         public void SearchFlights_Should_ThrowException()
         {
             // Arrange
-            var departureCity = "ORY";
-            var arrivalCity = "FES";
-            var departureDate = "2023-04-05";
-            var returnDate = "2023-04-12";
-            var passengers = 3;
-
+            var expectedTestFlight = new Faker<Flight>().Generate();
+            
             _flightServiceMock
-                .Setup(fs => fs.FilterFlights(It.Is<string>(m => m == departureCity),
-                    It.Is<string>(m => m == arrivalCity),
-                    It.Is<string>(m => m == departureDate),
-                    It.Is<string>(m => m == returnDate),
-                    It.Is<int>(m => m == passengers)))
+                .Setup(fs => fs.FilterFlights(It.Is<string>(m => m == expectedTestFlight.DepartureCity),
+                    It.Is<string>(m => m == expectedTestFlight.ArrivalCity),
+                    It.Is<string>(m => m == expectedTestFlight.DepartureDate),
+                    It.Is<string>(m => m == expectedTestFlight.ReturnDate),
+                    It.Is<int>(m => m == expectedTestFlight.Capacity)))
                 .Throws(new InvalidOperationException("An error occurred"));
 
             // Act
-            var actionResult = _controller.SearchFlights(departureCity, arrivalCity, departureDate, returnDate, passengers);
+            var actionResult = _controller.SearchFlights(expectedTestFlight.DepartureCity,
+                expectedTestFlight.ArrivalCity, expectedTestFlight.DepartureDate, expectedTestFlight.ReturnDate,
+                expectedTestFlight.Capacity);
 
             // Assert
-            _flightServiceMock.Verify(fs => fs.FilterFlights(departureCity, arrivalCity, departureDate, returnDate, passengers));
+            _flightServiceMock.Verify(fs => fs.FilterFlights(expectedTestFlight.DepartureCity,
+                expectedTestFlight.ArrivalCity, expectedTestFlight.DepartureDate, expectedTestFlight.ReturnDate,
+                expectedTestFlight.Capacity));
+
             Assert.AreEqual(500, ((ObjectResult)actionResult.Result).StatusCode);
         }
     }
